@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Camera, Sparkles, Search, Check, AlertCircle } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { X, Camera, Sparkles, Search, Check, AlertCircle, Upload } from 'lucide-react';
 import { Pet } from '../../types';
 import { api } from '../../services/api';
 import { motion, AnimatePresence } from 'motion/react';
@@ -22,6 +22,28 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
   const [photoUrl, setPhotoUrl] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [matches, setMatches] = useState<Array<{ pet: Pet; score: number; reason: string }>>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecciona un archivo de imagen válido (JPG, PNG, WEBP, etc.)');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      if (base64) {
+        setPhotoUrl(base64);
+        handleRunSearch(base64);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   const SAMPLE_PHOTOS = [
     {
@@ -123,22 +145,39 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
             </p>
           </div>
 
-          {/* Input de URL */}
+          {/* Input oculto y controles para subir foto o ingresar URL */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileUpload}
+          />
+
           <div className="space-y-2 mb-4">
-            <label className="text-xs font-bold text-stone-700">Enlace o URL de la fotografía</label>
-            <div className="flex gap-2">
+            <label className="text-xs font-bold text-stone-700">Fotografía para la búsqueda</label>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer shrink-0"
+                title="Subir foto desde tu dispositivo"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Subir Foto</span>
+              </button>
               <input
                 type="url"
-                value={photoUrl}
+                value={photoUrl.startsWith('data:') ? 'Imagen cargada desde tu dispositivo' : photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
-                placeholder="https://images.unsplash.com/..."
+                placeholder="O pega el enlace URL de la foto..."
                 className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs text-stone-900 bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
               />
               <button
                 type="button"
                 onClick={() => handleRunSearch()}
                 disabled={!photoUrl || isSearching}
-                className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs disabled:opacity-50 transition-colors cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs shadow-xs disabled:opacity-50 transition-colors cursor-pointer shrink-0"
               >
                 {isSearching ? 'Analizando...' : 'Comparar'}
               </button>

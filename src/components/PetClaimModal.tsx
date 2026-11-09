@@ -5,7 +5,7 @@ import { Pet } from '../types';
 import { api } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from './ToastContainer';
-import { ShieldCheck, X } from 'lucide-react';
+import { ShieldCheck, X, Upload } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface PetClaimModalProps {
@@ -27,6 +27,27 @@ export const PetClaimModal: React.FC<PetClaimModalProps> = ({
   const [proofImageUrl, setProofImageUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg('Por favor selecciona un archivo de imagen válido.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      if (base64) {
+        setProofImageUrl(base64);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,16 +177,43 @@ export const PetClaimModal: React.FC<PetClaimModalProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">
-                  URL de Foto Antigua o Carnet de Vacunación (Opcional)
-                </label>
                 <input
-                  type="url"
-                  value={proofImageUrl}
-                  onChange={(e) => setProofImageUrl(e.target.value)}
-                  placeholder="https://ejemplo.com/foto-con-mi-mascota.jpg"
-                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-stone-200 bg-stone-50 text-stone-800 placeholder:text-stone-400 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:outline-hidden font-medium"
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileUpload}
                 />
+                <label className="block text-xs font-bold text-stone-700 mb-1">
+                  Foto Antigua o Carnet de Vacunación (Opcional)
+                </label>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-colors cursor-pointer shrink-0"
+                    title="Subir archivo desde tu dispositivo"
+                  >
+                    <Upload className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Subir Foto</span>
+                  </button>
+                  <input
+                    type="url"
+                    value={proofImageUrl.startsWith('data:') ? 'Foto cargada desde tu dispositivo' : proofImageUrl}
+                    onChange={(e) => setProofImageUrl(e.target.value)}
+                    placeholder="O pega URL de foto..."
+                    className="flex-1 px-3.5 py-2 text-xs rounded-xl border border-stone-200 bg-stone-50 text-stone-800 placeholder:text-stone-400 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:outline-hidden font-medium"
+                  />
+                  {proofImageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setProofImageUrl('')}
+                      className="px-2 py-1 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-3 border-t border-stone-100">

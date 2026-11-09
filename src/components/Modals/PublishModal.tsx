@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { X, Upload, Sparkles, AlertTriangle, ShieldCheck, Home, Check } from 'lucide-react';
+import { X, Upload, Sparkles, AlertTriangle, ShieldCheck, Home, Check, Image as ImageIcon, Trash2 } from 'lucide-react';
 import { Pet, ReportType, SpeciesType, SizeType, GenderType } from '../../types';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -40,8 +40,37 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
   const [aiSuggestions, setAiSuggestions] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   if (!isOpen) return null;
+
+  // Manejo de carga de archivo de imagen desde el dispositivo
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor selecciona un archivo de imagen válido (JPG, PNG, WEBP, etc.)');
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      alert('La imagen no debe superar los 10MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      if (base64) {
+        setImageUrl(base64);
+        analyzeImageColors(base64);
+      }
+    };
+    reader.readAsDataURL(file);
+    // Reset input to allow re-selecting the same file if needed
+    e.target.value = '';
+  };
 
   // Analizador de imagen por Canvas para extracción automática de color
   const analyzeImageColors = (imgSrc: string) => {
@@ -93,7 +122,7 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
 
   const handleImageInput = (url: string) => {
     setImageUrl(url);
-    if (url.startsWith('http')) {
+    if (url.startsWith('http') || url.startsWith('data:')) {
       analyzeImageColors(url);
     }
   };
@@ -226,24 +255,49 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <Upload className="w-4 h-4 text-orange-500" />
-                <span>URL de Fotografía de la Mascota</span>
+                <ImageIcon className="w-4 h-4 text-orange-500" />
+                <span>Fotografía de la Mascota</span>
               </label>
               {analyzingImage && (
-                <span className="text-xs text-orange-600 flex items-center gap-1">
+                <span className="text-xs text-orange-600 flex items-center gap-1 font-medium">
                   <Sparkles className="w-3.5 h-3.5 animate-spin" /> Analizando paleta de color...
                 </span>
               )}
             </div>
 
-            <div className="flex gap-2">
-              <input
-                type="url"
-                placeholder="https://images.unsplash.com/... o pega enlace de foto"
-                value={imageUrl}
-                onChange={(e) => handleImageInput(e.target.value)}
-                className="flex-1 px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-200 text-slate-800 focus:outline-hidden focus:border-orange-500"
-              />
+            {/* Input oculto para subir archivo desde el dispositivo */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+
+            {/* Fila de Controles: Botón Subir Archivo + URL + Demo */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-orange-600 hover:bg-orange-700 rounded-xl shadow-xs transition-colors cursor-pointer shrink-0"
+                title="Seleccionar una fotografía de tu computadora o galería"
+              >
+                <Upload className="w-4 h-4" />
+                <span>Subir Imagen</span>
+              </motion.button>
+
+              <div className="relative flex-1">
+                <input
+                  type="url"
+                  placeholder="O pega el enlace URL de la foto..."
+                  value={imageUrl}
+                  onChange={(e) => handleImageInput(e.target.value)}
+                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-white border border-slate-200 text-slate-800 focus:outline-hidden focus:border-orange-500"
+                />
+              </div>
+
               <button
                 type="button"
                 onClick={() => {
@@ -252,11 +306,41 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
                     : 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=800&q=80';
                   handleImageInput(demoUrl);
                 }}
-                className="px-3 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 cursor-pointer"
+                className="px-3 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 cursor-pointer shrink-0"
               >
                 Foto Demo
               </button>
             </div>
+
+            {/* Vista Previa de la Fotografía Seleccionada */}
+            {imageUrl && (
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={imageUrl}
+                    alt="Vista previa de mascota"
+                    className="w-12 h-12 rounded-lg object-cover border border-slate-200 shadow-2xs"
+                  />
+                  <div>
+                    <span className="text-xs font-bold text-slate-800 flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5 text-emerald-600" /> Foto vinculada correctamente
+                    </span>
+                    <p className="text-[11px] text-slate-500 max-w-xs truncate">
+                      {imageUrl.startsWith('data:') ? 'Imagen cargada desde tu dispositivo' : imageUrl}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setImageUrl('')}
+                  className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                  title="Quitar imagen"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Quitar</span>
+                </button>
+              </div>
+            )}
 
             {/* Aviso de recomendación de IA */}
             {aiSuggestions && (
