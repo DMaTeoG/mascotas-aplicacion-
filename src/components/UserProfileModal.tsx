@@ -125,8 +125,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             transition={{ type: 'spring', stiffness: 320, damping: 26 }}
             className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-3xl shadow-2xl border border-stone-200/90 flex flex-col overflow-hidden z-10"
           >
-            {/* Encabezado del Perfil con Identidad Huellitas & Rescate */}
-            <div className="p-6 bg-gradient-to-r from-[#C6634A] via-[#DBBAA0] to-[#62BCAB] text-white shrink-0">
+            {/* Encabezado del Perfil */}
+            <div className="p-6 bg-gradient-to-r from-orange-600 via-amber-600 to-emerald-600 text-white shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl font-black shadow-inner">
@@ -139,8 +139,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         {user.email}
                       </span>
                     </h2>
-                    <p className="text-xs text-white/90 mt-0.5 font-medium">
-                      Trazabilidad de publicaciones, solicitudes de adopción y reclamos • Amor en cada huella
+                    <p className="text-xs text-orange-100 mt-0.5 font-medium">
+                      Trazabilidad de publicaciones, solicitudes de adopción y reclamos
                     </p>
                   </div>
                 </div>
@@ -160,8 +160,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onClick={() => setActiveTab('my_posts')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
                 activeTab === 'my_posts'
-                  ? 'bg-white text-[#C6634A] shadow-md'
-                  : 'bg-white/15 hover:bg-white/25 text-white'
+                  ? 'bg-white text-orange-700 shadow-md'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
               🐾 Mis Publicaciones ({myPets.length})
@@ -170,8 +170,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onClick={() => setActiveTab('received_adoptions')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
                 activeTab === 'received_adoptions'
-                  ? 'bg-white text-[#2C7B6D] shadow-md'
-                  : 'bg-white/15 hover:bg-white/25 text-white'
+                  ? 'bg-white text-emerald-700 shadow-md'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
               📥 Solicitudes Recibidas ({receivedAdoptions.length})
@@ -180,8 +180,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onClick={() => setActiveTab('sent_adoptions')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
                 activeTab === 'sent_adoptions'
-                  ? 'bg-white text-[#233242] shadow-md'
-                  : 'bg-white/15 hover:bg-white/25 text-white'
+                  ? 'bg-white text-indigo-700 shadow-md'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
               📤 Mis Postulaciones ({sentAdoptions.length})
@@ -190,8 +190,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onClick={() => setActiveTab('claims')}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap ${
                 activeTab === 'claims'
-                  ? 'bg-white text-[#8F6C4C] shadow-md'
-                  : 'bg-white/15 hover:bg-white/25 text-white'
+                  ? 'bg-white text-amber-700 shadow-md'
+                  : 'bg-white/10 hover:bg-white/20 text-white'
               }`}
             >
               🏠 Reclamos de Propiedad ({receivedClaims.length + sentClaims.length})
@@ -203,7 +203,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
         <div className="p-6 overflow-y-auto flex-1">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-16 text-slate-400 gap-3">
-              <div className="w-8 h-8 border-3 border-[#C6634A] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-3 border-orange-500 border-t-transparent rounded-full animate-spin" />
               <p className="text-xs">Cargando trazabilidad de tu perfil...</p>
             </div>
           ) : (

@@ -186,11 +186,11 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
                 onClick={() => setReportType('LOST')}
                 className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 font-semibold text-xs transition-all cursor-pointer ${
                   reportType === 'LOST'
-                    ? 'border-[#C6634A] bg-[#FDF2EE] text-[#C6634A] shadow-xs'
+                    ? 'border-rose-500 bg-rose-50 text-rose-700 shadow-xs'
                     : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <AlertTriangle className="w-5 h-5 text-[#C6634A]" />
+                <AlertTriangle className="w-5 h-5 text-rose-500" />
                 <span>Mascota Perdida</span>
               </button>
 
@@ -199,11 +199,11 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
                 onClick={() => setReportType('FOUND')}
                 className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 font-semibold text-xs transition-all cursor-pointer ${
                   reportType === 'FOUND'
-                    ? 'border-[#DBBAA0] bg-[#F9F5F0] text-[#8F6C4C] shadow-xs'
+                    ? 'border-amber-500 bg-amber-50 text-amber-800 shadow-xs'
                     : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <ShieldCheck className="w-5 h-5 text-[#8F6C4C]" />
+                <ShieldCheck className="w-5 h-5 text-amber-500" />
                 <span>Mascota Encontrada</span>
               </button>
 
@@ -212,11 +212,11 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
                 onClick={() => setReportType('ADOPTION')}
                 className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 font-semibold text-xs transition-all cursor-pointer ${
                   reportType === 'ADOPTION'
-                    ? 'border-[#62BCAB] bg-[#EBF7F5] text-[#2C7B6D] shadow-xs'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-800 shadow-xs'
                     : 'border-slate-200 text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <Home className="w-5 h-5 text-[#62BCAB]" />
+                <Home className="w-5 h-5 text-emerald-500" />
                 <span>En Adopción</span>
               </button>
             </div>
@@ -455,7 +455,7 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
               whileTap={{ scale: 0.96 }}
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-[#C6634A] hover:bg-[#B3553E] rounded-xl shadow-md shadow-[#C6634A]/25 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 rounded-xl shadow-md shadow-orange-500/20 transition-all cursor-pointer"
             >
               {isSubmitting ? (
                 <span>Publicando y calculando IA...</span>

@@ -53,7 +53,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           initial={{ opacity: 0, y: -10, scale: 0.94 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mb-3 flex items-center justify-center p-2 rounded-3xl bg-white/90 backdrop-blur-sm shadow-sm border border-[#DBBAA0]/40"
+          className="relative mb-3 flex items-center justify-center p-2 rounded-3xl bg-white shadow-sm border border-stone-200"
         >
           <Image
             src="/brand-symbol.png"
@@ -61,19 +61,19 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             width={86}
             height={66}
             priority
-            className="object-contain drop-shadow-xs"
+            className="object-contain"
           />
         </motion.div>
         
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#233242]">
-          Huellitas <span className="text-[#C6634A]">&</span> Rescate
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-stone-900">
+          Huellitas <span className="text-amber-600 font-extrabold">&</span> Rescate
         </h1>
 
         {showTagline && (
-          <p className="text-xs sm:text-sm font-semibold tracking-wider text-[#62BCAB] uppercase mt-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C6634A]" />
+          <p className="text-xs sm:text-sm font-semibold tracking-wider text-stone-500 mt-1 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-600" />
             <span>Amor en cada huella</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#62BCAB]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           </p>
         )}
       </div>
@@ -83,7 +83,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   if (variant === 'footer') {
     return (
       <div className={`flex items-center gap-3 ${className}`}>
-        <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center border border-stone-200/80 p-1 shrink-0 shadow-2xs">
+        <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center border border-stone-200 p-1 shrink-0 shadow-2xs">
           <Image
             src="/brand-symbol.png"
             alt="Huellitas & Rescate"
@@ -93,11 +93,11 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           />
         </div>
         <div>
-          <div className="text-sm font-black text-[#233242] tracking-tight leading-none">
-            Huellitas <span className="text-[#C6634A]">& Rescate</span>
+          <div className="text-sm font-black text-stone-900 tracking-tight leading-none">
+            Huellitas <span className="text-amber-600 font-extrabold">& Rescate</span>
           </div>
           <div className="text-[11px] text-stone-500 font-medium mt-0.5">
-            Amor en cada huella • Red comunitaria con IA
+            Amor en cada huella • Red comunitaria y rescate colaborativo
           </div>
         </div>
       </div>
@@ -126,21 +126,21 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
       <div>
         <div className="flex items-center gap-2">
-          <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[#233242]">
-            Huellitas <span className="text-[#C6634A] font-extrabold">&</span> Rescate
+          <span className="text-lg sm:text-xl font-black tracking-tight text-stone-900">
+            Huellitas <span className="text-amber-600 font-extrabold">& Rescate</span>
           </span>
-          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-[#EBF7F5] text-[#2C7B6D] border border-[#62BCAB]/40">
+          <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#62BCAB] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#62BCAB]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
             <span>Comunidad Activa</span>
           </span>
         </div>
 
         {showTagline && (
-          <p className="text-[11px] text-stone-500 hidden sm:block font-medium">
-            <span className="text-[#C6634A] font-semibold">Amor en cada huella</span> • Red comunitaria y búsqueda colaborativa
+          <p className="text-xs text-stone-500 hidden sm:block font-medium">
+            Red comunitaria y búsqueda colaborativa de mascotas
           </p>
         )}
       </div>
