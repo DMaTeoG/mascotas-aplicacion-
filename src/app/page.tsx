@@ -16,8 +16,11 @@ import { AuthModal } from '../components/Modals/AuthModal';
 import { VisualMatchModal } from '../components/Modals/VisualMatchModal';
 import { PetClaimModal } from '../components/PetClaimModal';
 import { UserProfileModal } from '../components/UserProfileModal';
+import { HeroSearch } from '../components/HeroSearch';
+import { CloseCaseModal } from '../components/Modals/CloseCaseModal';
+import { QuickPhotoSearchModal } from '../components/Modals/QuickPhotoSearchModal';
 import { api } from '../services/api';
-import { Pet, MatchResult, NotificationItem, AdoptionApplication } from '../types';
+import { Pet, MatchResult, NotificationItem, AdoptionApplication, ReportType } from '../types';
 import { Sparkles, Frown, Compass, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -39,6 +42,10 @@ export default function HomePage() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isPublishOpen, setIsPublishOpen] = useState(false);
+  const [createCaseType, setCreateCaseType] = useState<ReportType>('LOST');
+  const [closeCasePet, setCloseCasePet] = useState<Pet | null>(null);
+  const [isCloseCaseOpen, setIsCloseCaseOpen] = useState(false);
+  const [isQuickPhotoSearchOpen, setIsQuickPhotoSearchOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isMatchesListOpen, setIsMatchesListOpen] = useState(false);
   const [selectedMatch, setSelectedMatch] = useState<MatchResult | null>(null);
@@ -133,6 +140,17 @@ export default function HomePage() {
     }
   };
 
+  // Cerrar Caso
+  const handleCloseCase = async (petId: number, status: 'RESOLVED' | 'ADOPTED') => {
+    try {
+      const updated = await api.updatePetStatus(petId, status);
+      setPets(prev => prev.map(p => p.id === petId ? { ...p, status, status_display: updated.status_display } : p));
+      addToast('success', 'Caso Actualizado', `El caso se marcó como ${status === 'RESOLVED' ? 'Resuelto' : 'Adoptado'}.`);
+    } catch {
+      addToast('error', 'Error al cerrar caso', 'No se pudo actualizar el estado del caso en el servidor.');
+    }
+  };
+
   // Postulación a Adopción
   const handleSubmitAdoption = async (appData: AdoptionApplication) => {
     try {
@@ -207,7 +225,10 @@ export default function HomePage() {
       <Header
         unreadNotificationsCount={unreadNotifsCount}
         highMatchCount={highMatchCount}
-        onOpenPublish={() => setIsPublishOpen(true)}
+        onOpenPublish={(type) => {
+          setCreateCaseType(type || 'LOST');
+          setIsPublishOpen(true);
+        }}
         onOpenNotifications={() => setIsNotificationsOpen(true)}
         onOpenMatches={() => setIsMatchesListOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
@@ -216,12 +237,26 @@ export default function HomePage() {
 
       {/* Contenido Principal */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-        {/* Banner de Bienvenida y Estadísticas */}
+        {/* Buscador Inteligente Dual en el Centro */}
+        <HeroSearch
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          selectedSpecies={selectedSpecies}
+          onSpeciesChange={setSelectedSpecies}
+          selectedSize={selectedSize}
+          onSizeChange={setSelectedSize}
+          onOpenPhotoSearch={() => setIsQuickPhotoSearchOpen(true)}
+        />
+
+        {/* Dashboard de Métricas Interactivas */}
         <StatsBanner
           lostCount={counts.lost}
           foundCount={counts.found}
           adoptionCount={counts.adoption}
           matchCount={highMatchCount}
+          currentTab={currentTab}
+          onSelectTab={setCurrentTab}
+          onOpenMatches={() => setIsMatchesListOpen(true)}
           isRecalculating={isRecalculating}
           onRecalculateMatches={handleRecalculateMatches}
         />
@@ -312,6 +347,10 @@ export default function HomePage() {
                   onOpenAdoptionModal={(p) => setSelectedAdoptionPet(p)}
                   onVisualSearch={handleTriggerVisualSearch}
                   onOpenClaimModal={(p) => setSelectedClaimPet(p)}
+                  onCloseCase={(p) => {
+                    setCloseCasePet(p);
+                    setIsCloseCaseOpen(true);
+                  }}
                 />
               </motion.div>
             ))}
@@ -339,6 +378,24 @@ export default function HomePage() {
         isOpen={isPublishOpen}
         onClose={() => setIsPublishOpen(false)}
         onSubmit={handlePublishPet}
+        initialReportType={createCaseType}
+      />
+
+      <CloseCaseModal
+        isOpen={isCloseCaseOpen}
+        pet={closeCasePet}
+        onClose={() => {
+          setIsCloseCaseOpen(false);
+          setCloseCasePet(null);
+        }}
+        onConfirm={handleCloseCase}
+      />
+
+      <QuickPhotoSearchModal
+        isOpen={isQuickPhotoSearchOpen}
+        onClose={() => setIsQuickPhotoSearchOpen(false)}
+        pets={pets}
+        onSelectPet={(p) => setSelectedCommentsPet(p)}
       />
 
       <MatchingModal

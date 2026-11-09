@@ -100,6 +100,49 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           </p>
         </div>
 
+        {/* Acceso Rápido Demo (1 clic) */}
+        <div className="mb-5">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="button"
+            disabled={loading}
+            onClick={async () => {
+              setLoading(true);
+              setError(null);
+              try {
+                await login('demo_rescatista', 'demo12345');
+                onSuccess?.('¡Sesión Demo iniciada correctamente!');
+                onClose();
+              } catch {
+                try {
+                  await register({
+                    username: 'demo_rescatista',
+                    email: 'demo@huellitas.org',
+                    password: 'demo12345',
+                    first_name: 'Rescatista',
+                    last_name: 'Comunitario',
+                  });
+                  onSuccess?.('¡Cuenta Demo lista y sesión iniciada!');
+                  onClose();
+                } catch (err: any) {
+                  setError('No fue posible conectar la cuenta demo');
+                }
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 border border-amber-200/90 text-amber-900 text-xs font-bold shadow-xs transition-all cursor-pointer"
+          >
+            <Sparkles className="w-4 h-4 text-amber-600" />
+            <span>Probar al instante con Cuenta Demo (1 clic)</span>
+          </motion.button>
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-stone-200"></div></div>
+            <div className="relative flex justify-center text-[11px]"><span className="bg-white px-3 text-stone-400 font-semibold uppercase tracking-wider">o con tus credenciales</span></div>
+          </div>
+        </div>
+
         {error && (
           <div className="mb-4 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />

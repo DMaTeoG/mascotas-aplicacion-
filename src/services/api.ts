@@ -326,6 +326,26 @@ export const api = {
     }
   },
 
+  async updatePetStatus(petId: number, status: 'ACTIVE' | 'RESOLVED' | 'ADOPTED'): Promise<Pet> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/pets/${petId}/`, {
+        method: 'PATCH',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({ status })
+      });
+      if (!res.ok) throw new Error('Error al actualizar estado');
+      return await res.json();
+    } catch {
+      const p = FALLBACK_PETS.find(item => item.id === petId);
+      if (p) {
+        p.status = status;
+        p.status_display = status === 'RESOLVED' ? 'Resuelto / Encontrado' : status === 'ADOPTED' ? 'Adoptado' : 'Activo';
+        return p;
+      }
+      throw new Error('Mascota no encontrada');
+    }
+  },
+
   // Motor de Inteligencia Artificial (Coincidencias)
   async getMatches(petId?: number, minScore: number = 60.0): Promise<MatchResult[]> {
     try {

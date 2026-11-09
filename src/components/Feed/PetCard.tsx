@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { 
   MapPin, Calendar, Heart, MessageSquare, Sparkles, 
-  ExternalLink, AlertTriangle, ShieldCheck, Home 
+  ExternalLink, AlertTriangle, ShieldCheck, Home, CheckCircle 
 } from 'lucide-react';
 import { Pet, MatchResult } from '../../types';
 import { motion } from 'motion/react';
@@ -17,6 +17,7 @@ interface PetCardProps {
   onOpenAdoptionModal: (pet: Pet) => void;
   onVisualSearch?: (pet: Pet) => void;
   onOpenClaimModal?: (pet: Pet) => void;
+  onCloseCase?: (pet: Pet) => void;
 }
 
 export const PetCard: React.FC<PetCardProps> = ({
@@ -28,6 +29,7 @@ export const PetCard: React.FC<PetCardProps> = ({
   onOpenAdoptionModal,
   onVisualSearch,
   onOpenClaimModal,
+  onCloseCase,
 }) => {
   const [likes, setLikes] = useState(pet.likes_count || 0);
   const [isLiked, setIsLiked] = useState(false);
@@ -97,11 +99,21 @@ export const PetCard: React.FC<PetCardProps> = ({
           <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/25 pointer-events-none" />
 
           {/* Badge de Estado */}
-          <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
+          <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 z-10">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold shadow-xs backdrop-blur-xs ${badge.classes}`}>
               <badge.icon className="w-3.5 h-3.5" />
               {badge.label}
             </span>
+            {pet.status === 'RESOLVED' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-700 text-white shadow-md border border-emerald-400">
+                ✅ Resuelto / Reunido
+              </span>
+            )}
+            {pet.status === 'ADOPTED' && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-black bg-purple-700 text-white shadow-md border border-purple-400">
+                🏠 Adoptado
+              </span>
+            )}
           </div>
 
           {/* Recompensa (si aplica) */}
@@ -208,57 +220,78 @@ export const PetCard: React.FC<PetCardProps> = ({
         </div>
 
         {/* Botón Principal de Acción Contextual */}
-        <div className="flex items-center gap-1.5">
-          {pet.report_type === 'FOUND' && onVisualSearch && (
+        <div className="flex flex-wrap items-center gap-1.5">
+          {pet.status === 'ACTIVE' && onCloseCase && (
             <motion.button
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.94 }}
-              onClick={() => onVisualSearch(pet)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 transition-colors cursor-pointer shadow-2xs"
-              title="Buscar mascotas perdidas similares a esta foto mediante IA"
+              onClick={() => onCloseCase(pet)}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold text-stone-600 hover:text-emerald-700 hover:bg-emerald-50 border border-stone-200 transition-colors cursor-pointer"
+              title="Marcar este caso como resuelto o adoptado"
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-              <span>Foto IA</span>
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Cerrar caso</span>
             </motion.button>
           )}
 
-          {pet.report_type === 'ADOPTION' ? (
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.94 }}
-              onClick={() => onOpenAdoptionModal(pet)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
-            >
-              <Home className="w-3.5 h-3.5" />
-              <span>Adoptar</span>
-            </motion.button>
-          ) : pet.report_type === 'FOUND' ? (
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.94 }}
-              onClick={() => onOpenClaimModal ? onOpenClaimModal(pet) : onOpenComments(pet)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
-              title="Demostrar que esta mascota te pertenece"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Es mía</span>
-            </motion.button>
+          {pet.status === 'RESOLVED' || pet.status === 'ADOPTED' ? (
+            <span className="px-3 py-1.5 rounded-xl text-xs font-bold bg-stone-100 text-stone-600 border border-stone-200">
+              Caso concluido
+            </span>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.94 }}
-              onClick={() => {
-                if (petMatch) {
-                  onOpenMatchModal(petMatch);
-                } else {
-                  onOpenComments(pet);
-                }
-              }}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white shadow-xs transition-colors cursor-pointer"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              <span>¿Lo viste?</span>
-            </motion.button>
+            <>
+              {pet.report_type === 'FOUND' && onVisualSearch && (
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={() => onVisualSearch(pet)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 transition-colors cursor-pointer shadow-2xs"
+                  title="Buscar mascotas perdidas similares a esta foto mediante IA"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Foto IA</span>
+                </motion.button>
+              )}
+
+              {pet.report_type === 'ADOPTION' ? (
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={() => onOpenAdoptionModal(pet)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
+                >
+                  <Home className="w-3.5 h-3.5" />
+                  <span>Adoptar</span>
+                </motion.button>
+              ) : pet.report_type === 'FOUND' ? (
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={() => onOpenClaimModal ? onOpenClaimModal(pet) : onOpenComments(pet)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs transition-colors cursor-pointer"
+                  title="Demostrar que esta mascota te pertenece"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Es mía</span>
+                </motion.button>
+              ) : (
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.94 }}
+                  onClick={() => {
+                    if (petMatch) {
+                      onOpenMatchModal(petMatch);
+                    } else {
+                      onOpenComments(pet);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-orange-600 hover:bg-orange-700 text-white shadow-xs transition-colors cursor-pointer"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>¿Lo viste?</span>
+                </motion.button>
+              )}
+            </>
           )}
         </div>
       </div>

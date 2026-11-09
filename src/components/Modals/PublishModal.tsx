@@ -9,10 +9,17 @@ interface PublishModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: Partial<Pet>) => Promise<void>;
+  initialReportType?: ReportType;
 }
 
-export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onSubmit }) => {
-  const [reportType, setReportType] = useState<ReportType>('LOST');
+export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onSubmit, initialReportType = 'LOST' }) => {
+  const [reportType, setReportType] = useState<ReportType>(initialReportType);
+
+  React.useEffect(() => {
+    if (isOpen && initialReportType) {
+      setReportType(initialReportType);
+    }
+  }, [isOpen, initialReportType]);
   const [species, setSpecies] = useState<SpeciesType>('dog');
   const [title, setTitle] = useState('');
   const [breed, setBreed] = useState('Mestizo / Criollo');
