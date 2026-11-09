@@ -21,9 +21,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 }) => {
   const { login, register } = useAuth();
   const [mode, setMode] = useState<'login' | 'register'>(defaultMode);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('demo_rescatista');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('demo12345');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -151,6 +151,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             )}
 
+            {mode === 'login' && (
+              <div className="mb-4 p-3 bg-emerald-50/90 border border-emerald-200/80 rounded-xl text-xs text-emerald-900 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>
+                    Credenciales demo pre-cargadas (<code className="font-mono bg-emerald-100/80 px-1 py-0.5 rounded text-[11px]">demo_rescatista</code>). Guarda reportes y reclamos reales.
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsername('demo_rescatista');
+                    setPassword('demo12345');
+                  }}
+                  className="text-[11px] font-bold text-emerald-700 underline hover:text-emerald-900 cursor-pointer shrink-0"
+                >
+                  Restaurar
+                </button>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-3.5">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Usuario</label>
@@ -252,7 +273,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   ¿Ya estás registrado?{' '}
                   <button
                     type="button"
-                    onClick={() => { setMode('login'); setError(null); }}
+                    onClick={() => {
+                      setMode('login');
+                      setError(null);
+                      if (!username) setUsername('demo_rescatista');
+                      if (!password) setPassword('demo12345');
+                    }}
                     className="text-indigo-600 font-bold hover:underline cursor-pointer"
                   >
                     Inicia sesión
