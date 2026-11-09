@@ -25,26 +25,26 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
 
   const SAMPLE_PHOTOS = [
     {
-      label: 'Golden / Labrador Dorado',
-      url: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=800&q=80',
+      label: 'Criollo Cuatro Ojos',
+      url: 'https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?auto=format&fit=crop&w=800&q=80',
       species: 'dog',
-      color: 'dorado'
+      color: 'negro'
     },
     {
-      label: 'Gatita Siamesa / Crema',
-      url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80',
-      species: 'cat',
-      color: 'crema'
-    },
-    {
-      label: 'Cachorro Mestizo Marrón',
-      url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80',
+      label: 'Criollo Barcino',
+      url: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=800&q=80',
       species: 'dog',
       color: 'marron'
     },
     {
-      label: 'Gata Carey / Tricolor',
-      url: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&w=800&q=80',
+      label: 'Mestizo Rubio Rescatado',
+      url: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=800&q=80',
+      species: 'dog',
+      color: 'dorado'
+    },
+    {
+      label: 'Gata Carey Comunitaria',
+      url: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=800&q=80',
       species: 'cat',
       color: 'atigrado'
     }

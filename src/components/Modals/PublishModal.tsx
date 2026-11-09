@@ -124,8 +124,8 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
         contact_name: contactName || 'Comunidad Solidaria',
         contact_phone: contactPhone,
         image_url: imageUrl || (species === 'dog' 
-          ? 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=800&q=80'
-          : 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80'),
+          ? 'https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?auto=format&fit=crop&w=800&q=80'
+          : 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=800&q=80'),
         event_date: new Date().toISOString()
       });
       onClose();
@@ -248,8 +248,8 @@ export const PublishModal: React.FC<PublishModalProps> = ({ isOpen, onClose, onS
                 type="button"
                 onClick={() => {
                   const demoUrl = species === 'dog'
-                    ? 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=800&q=80'
-                    : 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80';
+                    ? 'https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?auto=format&fit=crop&w=800&q=80'
+                    : 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=800&q=80';
                   handleImageInput(demoUrl);
                 }}
                 className="px-3 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-100 cursor-pointer"
