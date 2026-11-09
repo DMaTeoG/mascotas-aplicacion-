@@ -1,10 +1,12 @@
 import type { Pet, MatchResult, AdoptionApplication, CommentItem, NotificationItem, PetClaim } from '../types/index.ts';
 
+const PRODUCTION_API_URL = 'https://mascotas-aplicacion-back.onrender.com/api/v1';
+
 const API_BASE_URL = 
   process.env.NEXT_PUBLIC_API_URL || 
-  (typeof window !== 'undefined' 
-    ? '/api/v1' 
-    : (process.env.BACKEND_URL ? `${process.env.BACKEND_URL.replace(/\/+$/, '')}/api/v1` : 'http://localhost:8000/api/v1'));
+  (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? PRODUCTION_API_URL
+    : (process.env.NODE_ENV === 'production' ? PRODUCTION_API_URL : 'http://localhost:8000/api/v1'));
 
 // Datos iniciales de contingencia si el backend está desconectado
 const FALLBACK_PETS: Pet[] = [
