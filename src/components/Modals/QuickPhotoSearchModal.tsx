@@ -112,10 +112,10 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
           </button>
 
           <div className="text-center mb-6">
-            <div className="inline-flex p-3 rounded-2xl bg-amber-50 text-amber-700 mb-3 border border-amber-200/80">
+            <div className="inline-flex p-3 rounded-2xl bg-[#EBF7F5] text-[#2C7B6D] mb-3 border border-[#62BCAB]/30 shadow-xs">
               <Camera className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-stone-900">
+            <h2 className="text-2xl font-black text-[#233242]">
               Búsqueda Visual por Fotografía
             </h2>
             <p className="text-xs text-stone-600 mt-1">
@@ -125,20 +125,20 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
 
           {/* Input de URL */}
           <div className="space-y-2 mb-4">
-            <label className="text-xs font-bold text-stone-700">Enlace o URL de la fotografía</label>
+            <label className="text-xs font-bold text-[#233242]">Enlace o URL de la fotografía</label>
             <div className="flex gap-2">
               <input
                 type="url"
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
                 placeholder="https://images.unsplash.com/..."
-                className="flex-1 px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs text-stone-900 bg-stone-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                className="flex-1 px-3.5 py-2.5 rounded-xl border border-[#DBBAA0]/45 text-xs text-[#233242] bg-[#FAF8F5] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#C6634A]/20"
               />
               <button
                 type="button"
                 onClick={() => handleRunSearch()}
                 disabled={!photoUrl || isSearching}
-                className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs disabled:opacity-50 transition-colors cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-[#C6634A] hover:bg-[#B3553E] text-white font-bold text-xs shadow-xs disabled:opacity-50 transition-colors cursor-pointer"
               >
                 {isSearching ? 'Analizando...' : 'Comparar'}
               </button>
@@ -161,8 +161,8 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
                   }}
                   className={`p-1.5 rounded-xl border text-left transition-all cursor-pointer ${
                     photoUrl === sample.url
-                      ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-500/20'
-                      : 'border-stone-200 hover:border-stone-300 bg-white'
+                      ? 'border-[#C6634A] bg-[#FDF2EE] ring-2 ring-[#C6634A]/20'
+                      : 'border-[#DBBAA0]/45 hover:border-[#DBBAA0] bg-white'
                   }`}
                 >
                   <img
@@ -170,7 +170,7 @@ export const QuickPhotoSearchModal: React.FC<QuickPhotoSearchModalProps> = ({
                     alt={sample.label}
                     className="w-full h-16 object-cover rounded-lg mb-1"
                   />
-                  <div className="text-[10px] font-bold text-stone-800 line-clamp-1">
+                  <div className="text-[10px] font-bold text-[#233242] line-clamp-1">
                     {sample.label}
                   </div>
                 </button>

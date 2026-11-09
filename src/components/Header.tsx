@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { PawPrint, Bell, PlusCircle, Sparkles, User as UserIcon, LogOut, ChevronDown, AlertTriangle, ShieldCheck, Home } from 'lucide-react';
+import { Bell, PlusCircle, Sparkles, User as UserIcon, LogOut, ChevronDown, AlertTriangle, ShieldCheck, Home } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReportType } from '../types';
+import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   unreadNotificationsCount: number;
@@ -45,37 +46,10 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/90 shadow-xs transition-colors">
+    <header className="sticky top-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#DBBAA0]/35 shadow-xs transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-        {/* Logo & Marca con identidad comunitaria */}
-        <div className="flex items-center gap-3">
-          <motion.div
-            whileHover={{ scale: 1.05, rotate: -2 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 18 }}
-            className="w-11 h-11 rounded-2xl bg-amber-600 flex items-center justify-center shadow-md shadow-amber-600/20 text-white cursor-pointer select-none"
-            aria-label="Logo Huellitas & Rescate"
-          >
-            <PawPrint className="w-6 h-6" />
-          </motion.div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-black tracking-tight text-stone-900">
-                Huellitas <span className="text-amber-600 font-extrabold">& Rescate</span>
-              </span>
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <span>Comunidad Activa</span>
-              </span>
-            </div>
-            <p className="text-xs text-stone-500 hidden sm:block font-medium">
-              Red comunitaria y búsqueda colaborativa de mascotas
-            </p>
-          </div>
-        </div>
+        {/* Identidad Oficial Huellitas & Rescate */}
+        <BrandLogo variant="header" />
 
         {/* Acciones Rápidas */}
         <div className="flex items-center gap-2 sm:gap-3">
@@ -85,13 +59,13 @@ export const Header: React.FC<HeaderProps> = ({
             whileTap={{ scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 350, damping: 20 }}
             onClick={onOpenMatches}
-            className="relative flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-stone-100 hover:bg-stone-200/80 text-stone-800 border border-stone-200 transition-colors shadow-2xs cursor-pointer"
+            className="relative flex items-center gap-2 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-[#EBF7F5] text-[#233242] border border-[#DBBAA0]/50 transition-colors shadow-2xs cursor-pointer"
             title="Ver coincidencias detectadas por la Inteligencia Artificial"
           >
-            <Sparkles className="w-4 h-4 text-amber-600" />
+            <Sparkles className="w-4 h-4 text-[#62BCAB]" />
             <span className="hidden md:inline">Coincidencias</span>
             {highMatchCount > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full bg-amber-600 text-white text-[11px] font-black">
+              <span className="px-1.5 py-0.2 rounded-full bg-[#C6634A] text-white text-[11px] font-black">
                 {highMatchCount}
               </span>
             )}
@@ -103,37 +77,37 @@ export const Header: React.FC<HeaderProps> = ({
             whileTap={{ scale: 0.92 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             onClick={onOpenNotifications}
-            className="relative p-2.5 rounded-xl text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer border border-stone-200/80"
+            className="relative p-2.5 rounded-xl bg-white text-[#233242] hover:text-[#C6634A] hover:bg-[#FDF2EE] transition-colors cursor-pointer border border-[#DBBAA0]/40 shadow-2xs"
             aria-label="Notificaciones"
           >
             <Bell className="w-5 h-5" />
             {unreadNotificationsCount > 0 && (
               <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500 ring-2 ring-white"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C6634A] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#C6634A] ring-2 ring-white"></span>
               </span>
             )}
           </motion.button>
 
           {/* Botón de Autenticación / Usuario */}
           {user ? (
-            <div className="flex items-center gap-1.5 pl-1 border-l border-stone-200">
+            <div className="flex items-center gap-1.5 pl-1 border-l border-[#DBBAA0]/50">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={onOpenProfile}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100/80 text-amber-900 border border-amber-200 text-xs font-bold transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FDF2EE] hover:bg-[#FBE4DD] text-[#9A3E28] border border-[#C6634A]/30 text-xs font-bold transition-colors cursor-pointer shadow-2xs"
                 title="Abrir Mi Perfil y Casos"
               >
-                <UserIcon className="w-3.5 h-3.5 text-amber-600" />
+                <UserIcon className="w-3.5 h-3.5 text-[#C6634A]" />
                 <span className="max-w-[100px] truncate">{user.first_name || user.username}</span>
-                <span className="text-[10px] text-amber-700 font-semibold underline">Perfil</span>
+                <span className="text-[10px] text-[#C6634A] font-semibold underline">Perfil</span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
                 onClick={logout}
-                className="p-2 rounded-xl text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                className="p-2 rounded-xl text-stone-400 hover:text-[#C6634A] hover:bg-[#FDF2EE] transition-colors cursor-pointer"
                 title="Cerrar sesión"
               >
                 <LogOut className="w-4 h-4" />
@@ -144,9 +118,9 @@ export const Header: React.FC<HeaderProps> = ({
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
               onClick={onOpenAuth}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-stone-700 hover:text-stone-900 hover:bg-stone-100 border border-stone-200 transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold text-[#233242] hover:text-[#C6634A] hover:bg-white bg-white/70 border border-[#DBBAA0]/50 transition-colors cursor-pointer shadow-2xs"
             >
-              <UserIcon className="w-4 h-4" />
+              <UserIcon className="w-4 h-4 text-[#C6634A]" />
               <span>Ingresar</span>
             </motion.button>
           )}
@@ -157,9 +131,9 @@ export const Header: React.FC<HeaderProps> = ({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex items-center gap-2 px-4 sm:px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-stone-900 hover:bg-stone-800 text-white shadow-sm transition-colors cursor-pointer select-none"
+              className="flex items-center gap-2 px-4 sm:px-4.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-[#233242] hover:bg-[#1C2834] text-white shadow-sm transition-colors cursor-pointer select-none"
             >
-              <PlusCircle className="w-4 h-4 text-amber-400 shrink-0" />
+              <PlusCircle className="w-4 h-4 text-[#62BCAB] shrink-0" />
               <span>Crear un caso</span>
               <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isMenuOpen ? 'rotate-180' : ''}`} />
             </motion.button>
@@ -171,46 +145,46 @@ export const Header: React.FC<HeaderProps> = ({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-stone-200/90 py-2 z-50 overflow-hidden"
+                  className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-[#DBBAA0]/40 py-2 z-50 overflow-hidden"
                 >
                   <div className="px-3 py-1.5 border-b border-stone-100 text-[11px] font-bold text-stone-400 uppercase tracking-wider">
                     Selecciona el tipo de caso
                   </div>
                   <button
                     onClick={() => handleSelectCaseType('LOST')}
-                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-rose-50 text-left transition-colors cursor-pointer group"
+                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-[#FDF2EE] text-left transition-colors cursor-pointer group"
                   >
-                    <div className="p-2 rounded-xl bg-rose-100 text-rose-600 mt-0.5 group-hover:scale-105 transition-transform">
+                    <div className="p-2 rounded-xl bg-[#FDF2EE] text-[#C6634A] mt-0.5 group-hover:scale-105 transition-transform border border-[#C6634A]/20">
                       <AlertTriangle className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-stone-900 group-hover:text-rose-700">Mascota Perdida</div>
+                      <div className="text-xs font-bold text-[#233242] group-hover:text-[#C6634A]">Mascota Perdida</div>
                       <div className="text-[11px] text-stone-500">Extravié a mi mascota y busco apoyo de la comunidad</div>
                     </div>
                   </button>
 
                   <button
                     onClick={() => handleSelectCaseType('FOUND')}
-                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-amber-50 text-left transition-colors cursor-pointer group"
+                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-[#F9F5F0] text-left transition-colors cursor-pointer group"
                   >
-                    <div className="p-2 rounded-xl bg-amber-100 text-amber-700 mt-0.5 group-hover:scale-105 transition-transform">
+                    <div className="p-2 rounded-xl bg-[#F9F5F0] text-[#8F6C4C] mt-0.5 group-hover:scale-105 transition-transform border border-[#DBBAA0]/40">
                       <ShieldCheck className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-stone-900 group-hover:text-amber-800">Mascota Encontrada</div>
+                      <div className="text-xs font-bold text-[#233242] group-hover:text-[#8F6C4C]">Mascota Encontrada</div>
                       <div className="text-[11px] text-stone-500">Hallé un animalito y lo tengo en resguardo temporal</div>
                     </div>
                   </button>
 
                   <button
                     onClick={() => handleSelectCaseType('ADOPTION')}
-                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-emerald-50 text-left transition-colors cursor-pointer group"
+                    className="w-full flex items-start gap-3 px-3.5 py-2.5 hover:bg-[#EBF7F5] text-left transition-colors cursor-pointer group"
                   >
-                    <div className="p-2 rounded-xl bg-emerald-100 text-emerald-700 mt-0.5 group-hover:scale-105 transition-transform">
+                    <div className="p-2 rounded-xl bg-[#EBF7F5] text-[#2C7B6D] mt-0.5 group-hover:scale-105 transition-transform border border-[#62BCAB]/30">
                       <Home className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-stone-900 group-hover:text-emerald-800">Poner en Adopción</div>
+                      <div className="text-xs font-bold text-[#233242] group-hover:text-[#2C7B6D]">Poner en Adopción</div>
                       <div className="text-[11px] text-stone-500">Busco un hogar responsable y definitivo para un animal</div>
                     </div>
                   </button>
@@ -223,4 +197,3 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
-

@@ -19,6 +19,7 @@ import { UserProfileModal } from '../components/UserProfileModal';
 import { HeroSearch } from '../components/HeroSearch';
 import { CloseCaseModal } from '../components/Modals/CloseCaseModal';
 import { QuickPhotoSearchModal } from '../components/Modals/QuickPhotoSearchModal';
+import { BrandLogo } from '../components/BrandLogo';
 import { api } from '../services/api';
 import { Pet, MatchResult, NotificationItem, AdoptionApplication, ReportType } from '../types';
 import { Sparkles, Frown, Compass, ShieldCheck } from 'lucide-react';
@@ -277,20 +278,20 @@ export default function HomePage() {
         {/* Feed de Mascotas */}
         {loading ? (
           <div className="py-24 text-center space-y-3">
-            <div className="w-12 h-12 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-sm font-bold text-stone-600">Cargando publicaciones comunitarias...</p>
+            <div className="w-12 h-12 border-4 border-[#C6634A] border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-sm font-bold text-[#233242]">Cargando publicaciones comunitarias...</p>
           </div>
         ) : filteredPets.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, y: 16, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="py-20 text-center bg-white rounded-3xl border border-stone-200/90 p-8 shadow-xs"
+            className="py-20 text-center bg-white rounded-3xl border border-[#DBBAA0]/45 p-8 shadow-xs"
           >
-            <div className="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center mx-auto mb-3 border border-orange-100">
+            <div className="w-14 h-14 rounded-2xl bg-[#FDF2EE] text-[#C6634A] flex items-center justify-center mx-auto mb-3 border border-[#C6634A]/25">
               <Compass className="w-7 h-7" />
             </div>
-            <h3 className="text-base font-extrabold text-stone-900">No encontramos resultados para tu búsqueda</h3>
+            <h3 className="text-base font-extrabold text-[#233242]">No encontramos resultados para tu búsqueda</h3>
             <p className="text-xs text-stone-500 mt-1 max-w-md mx-auto font-medium">
               Intenta cambiar los filtros de especie, tamaño o limpiar el texto de búsqueda.
             </p>
@@ -303,7 +304,7 @@ export default function HomePage() {
                 setSelectedSize('');
                 setSearchTerm('');
               }}
-              className="mt-4 px-4 py-2 text-xs font-bold bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl transition-colors cursor-pointer"
+              className="mt-4 px-4 py-2 text-xs font-bold bg-[#233242] hover:bg-[#1C2834] text-white rounded-xl transition-colors cursor-pointer"
             >
               Restablecer Filtros
             </motion.button>
@@ -358,17 +359,24 @@ export default function HomePage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="mt-16 bg-white border-t border-slate-200/80 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-orange-500" />
-            <span>Plataforma Inteligente de Mascotas y Adopción • Programación Orientada a la Web</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span>Next.js 15 & Django REST</span>
-            <span>•</span>
-            <span>Motor de IA Probabilístico Explicable (XAI)</span>
+      {/* Footer con Identidad Huellitas & Rescate */}
+      <footer className="mt-20 bg-white/95 border-t border-[#DBBAA0]/40 py-10 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <BrandLogo variant="footer" />
+
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-stone-500 font-medium">
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EBF7F5] text-[#2C7B6D] border border-[#62BCAB]/30 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#62BCAB]" />
+              Motor IA Explicable (XAI)
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF2EE] text-[#9A3E28] border border-[#C6634A]/25 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C6634A]" />
+              Amor en cada huella
+            </span>
+            <div className="flex items-center gap-2 text-stone-400">
+              <ShieldCheck className="w-4 h-4 text-[#C6634A]" />
+              <span>Programación Orientada a la Web</span>
+            </div>
           </div>
         </div>
       </footer>

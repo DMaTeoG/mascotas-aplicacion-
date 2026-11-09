@@ -16,8 +16,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Huellitas & Rescate | Plataforma Inteligente para Mascotas y Adopción",
-  description: "Red social comunitaria con Inteligencia Artificial para la búsqueda de animales perdidos, reporte de encontrados y adopción responsable.",
+  title: "Huellitas & Rescate | Amor en cada huella",
+  description: "Red social comunitaria con Inteligencia Artificial para la búsqueda colaborativa de mascotas perdidas, reporte de resguardos y adopción responsable.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/brand-symbol.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900 selection:bg-orange-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#FAF8F5] text-[#233242] selection:bg-[#C6634A] selection:text-white">
         <ErrorBoundary>
           <AuthProvider>
             <ToastProvider>
