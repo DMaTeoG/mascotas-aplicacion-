@@ -534,20 +534,25 @@ export const api = {
     }
   },
 
-  // Búsqueda Visual por Imagen (Found -> Lost)
-  async visualSearch(foundPetId: number) {
+  // Búsqueda Visual por Imagen (Found -> Lost o URL -> Lost)
+  async visualSearch(param: number | { foundPetId?: number; imageUrl?: string; species?: string }) {
+    const payload = typeof param === 'number' 
+      ? { found_pet_id: param } 
+      : { found_pet_id: param.foundPetId, image_url: param.imageUrl, species: param.species };
+
     try {
       const res = await fetch(`${API_BASE_URL}/ai/matches/visual-search/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ found_pet_id: foundPetId }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Error al ejecutar búsqueda visual');
       return await res.json();
-    } catch {
+    } catch (err) {
+      console.warn('[VisualSearch Fallback]', err);
       // Fallback con datos de ejemplo
       return {
-        found_pet_id: foundPetId,
+        found_pet_id: typeof param === 'number' ? param : param.foundPetId,
         matches_count: 1,
         results: [
           {
