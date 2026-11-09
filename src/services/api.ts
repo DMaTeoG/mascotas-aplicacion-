@@ -1,12 +1,25 @@
 import type { Pet, MatchResult, AdoptionApplication, CommentItem, NotificationItem, PetClaim } from '../types/index.ts';
 
-const PRODUCTION_API_URL = 'https://mascotas-aplicacion-back.onrender.com/api/v1';
+function getCleanApiUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  let raw = envUrl;
+  
+  if (!raw && typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
+    raw = 'https://mascotas-aplicacion-back.onrender.com/api/v1';
+  } else if (!raw) {
+    raw = process.env.NODE_ENV === 'production' 
+      ? 'https://mascotas-aplicacion-back.onrender.com/api/v1' 
+      : 'http://localhost:8000/api/v1';
+  }
 
-const API_BASE_URL = 
-  process.env.NEXT_PUBLIC_API_URL || 
-  (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
-    ? PRODUCTION_API_URL
-    : (process.env.NODE_ENV === 'production' ? PRODUCTION_API_URL : 'http://localhost:8000/api/v1'));
+  let clean = raw.trim().replace(/([^:])\/\/+/g, '$1/');
+  if (!clean.includes('/api/v1')) {
+    clean = `${clean.replace(/\/+$/, '')}/api/v1`;
+  }
+  return clean.replace(/\/+$/, '');
+}
+
+const API_BASE_URL = getCleanApiUrl();
 
 // Datos iniciales de contingencia si el backend está desconectado
 const FALLBACK_PETS: Pet[] = [

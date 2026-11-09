@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
-const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://mascotas-aplicacion-back.onrender.com';
+const rawBackend = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://mascotas-aplicacion-back.onrender.com';
+const cleanBackend = rawBackend.trim().replace(/([^:])\/\/+/g, '$1/').replace(/\/api\/v1\/?$/, '').replace(/\/+$/, '');
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -13,12 +14,10 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    // Permite usar la variable privada BACKEND_URL en Vercel sin prefijo público
-    const cleanUrl = backendUrl.replace(/\/api\/v1\/?$/, '');
     return [
       {
         source: '/api/v1/:path*',
-        destination: `${cleanUrl}/api/v1/:path*`,
+        destination: `${cleanBackend}/api/v1/:path*`,
       },
     ];
   },
