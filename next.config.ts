@@ -5,16 +5,29 @@ const cleanBackend = rawBackend.trim().replace(/([^:])\/\/+/g, '$1/').replace(/\
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  skipTrailingSlashRedirect: true,
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.onrender.com',
+      },
     ],
   },
   async rewrites() {
     return [
+      {
+        source: '/api/v1/:path*/',
+        destination: `${cleanBackend}/api/v1/:path*/`,
+      },
       {
         source: '/api/v1/:path*',
         destination: `${cleanBackend}/api/v1/:path*`,
